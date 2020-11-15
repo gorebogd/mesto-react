@@ -1,41 +1,145 @@
-import logo from './images/logo.svg';
-import './index.css';
+import React, { useState } from 'react';
+import '../index.css';
+import Header from './Header';
+import Main from './Main';
+import Footer from './Footer';
+import PopupWithForm from './PopupWithForm';
+import ImagePopup from './ImagePopup';
 
 function App() {
+
+    const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
+    const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+    const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+    const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
+    const [selectedCard, setSelectedCard] = useState({});
+
+    function handleEditProfileClick() {
+        setIsEditProfilePopupOpen(true);
+    }
+    
+    function handleEditAvatarClick() {
+        setIsEditAvatarPopupOpen(true);
+    }
+    
+    function handleAddPlaceClick() {
+        setIsAddPlacePopupOpen(true);
+    }
+
+    function handleCardClick(card) {
+        setSelectedCard(card);
+        setIsImagePopupOpen(true);
+    }
+
+    function closeAllPopups () {
+        setIsEditProfilePopupOpen(false);
+        setIsEditAvatarPopupOpen(false);
+        setIsAddPlacePopupOpen(false);
+        setIsImagePopupOpen(false);
+    }
+
     return (
         <>
-            <header className="header">
-                <img src={logo} alt="Проект Mesto" className="header__logo"/>
-            </header>
-            <main className="main">
-                <section className="profile">
-                    <div className="profile__container">
-                        <div className="profile__avatar-container">
-                            <img className="profile__avatar"
-                                 src="./images/cousteau.jpg"
-                                 alt="Аватар"
-                            />
-                        </div>
-                        <div className="profile__block">
-                            <div className="profile__info">
-                                <h1 className="profile__title">...</h1>
-                                <button type="button" className="profile__edit-button"></button>
-                            </div>
-                            <p className="profile__description">...</p>
-                        </div>
-                        <button type="button" className="profile__add-button"></button>
-                    </div>
-                </section>
-                <section className="cards">
-                    <div className="cards__grid">
-                    </div>
-                </section>
-            </main>
-            <footer className="footer">
-                <p className="footer__copyright">&copy; 2020 Mesto Russia</p>
-            </footer>
+            <Header />
+            <Main 
+                onEditProfile={handleEditProfileClick}
+                onAddPlace={handleAddPlaceClick}
+                onEditAvatar={handleEditAvatarClick}
+                onCardClick={handleCardClick}
+                />
+            <Footer/>
+            <PopupWithForm
+                isOpen={isEditProfilePopupOpen} 
+                onClose={closeAllPopups}
+                name='edit-profile'
+                title='Редактировать профиль'
+                children={
+                    <>
+                        <input
+                            name="name"
+                            type="text"
+                            placeholder="Имя"
+                            className="popup__input-text popup__input-text_type_name"
+                            minLength="2"
+                            maxLength="40"
+                            autoComplete="off"
+                            required
+                        />
+                        <span id="name-error" className='popup__error'></span>
+                        <input
+                            name="job"
+                            type="text"
+                            placeholder="Профессия"
+                            className="popup__input-text popup__input-text_type_job"
+                            minLength="2"
+                            maxLength="200"
+                            autoComplete="off"
+                            required
+                        />
+                        <span id="job-error" className='popup__error'></span>
+                    </>
 
-            <div className="popup popup_type_edit-profile">
+            }/>
+            <PopupWithForm
+                isOpen={isAddPlacePopupOpen}
+                onClose={closeAllPopups}
+                name='add-card'
+                title='Новое место'
+                children={
+                    <>
+                         <input
+                            name="place"
+                            type="text"
+                            placeholder="Название"
+                            className="popup__input-text popup__input-text_type_place"
+                            minLength="1"
+                            maxLength="30"
+                            autoComplete="off"
+                            required
+                        />
+                        <span id="place-error" className='popup__error'></span>
+                        <input
+                            name="image"
+                            type="url"
+                            placeholder="Ссылка на картинку"
+                            className="popup__input-text popup__input-text_type_url"
+                            autoComplete="off"
+                            required
+                        />
+                        <span id="image-error" className='popup__error '></span>
+                    </>
+                }
+            />
+
+            <PopupWithForm
+                isOpen={isEditAvatarPopupOpen}
+                onClose={closeAllPopups}
+                name='update-avatar'
+                title='Обновить Аватар'
+                children={
+                    <>
+                        <input
+                            name="avatar"
+                            type="url"
+                            placeholder="Введите URL аватара"
+                            className="popup__input-text popup__input-text_type_avatar-source"
+                            required
+                        />
+                        <span id="avatar-error" className='popup__error'></span>   
+                    </>
+                }
+            />
+            <PopupWithForm
+                name='confirm'
+                title='Вы уверены?'
+            />
+            <ImagePopup 
+                isOpen={isImagePopupOpen}
+                onClose={closeAllPopups}
+                card={selectedCard}
+                />
+
+            {/* <div className="popup popup_type_edit-profile">
                 <div className="popup__container">
                     <button type="button" className="popup__close-button"></button>
                     <h2 className="popup__title">Редактировать профиль</h2>
@@ -124,10 +228,10 @@ function App() {
                         <button type="submit" className="popup__submit">Сохранить</button>
                     </form>
                 </div>
-            </div>
+            </div> */}
 
 
-            <div className="popup popup_type_image">
+            {/* <div className="popup popup_type_image">
                 <div className="popup__container_type_image">
                     <button type="button" className="popup__close-button"></button>
                     <figure className="popup__figure">
@@ -135,9 +239,9 @@ function App() {
                         <figcaption className="popup__description"></figcaption>
                     </figure>
                 </div>
-            </div>
+            </div> */}
 
-            <template className="cards-template">
+            {/* <template className="cards-template">
                 <div className="cards__card">
                     <button type="button" className="cards__delete-button"></button>
                     <img
@@ -152,7 +256,7 @@ function App() {
                         </div>
                     </div>
                 </div>
-            </template>
+            </template> */}
         </>
 
     );
