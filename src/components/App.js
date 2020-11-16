@@ -1,18 +1,32 @@
-import React, { useState } from 'react';
-import '../index.css';
+import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import api from '../utils/api';
+import EditProfilePopup from './EditProfilePopup';
+import EditAvatarPopup from './EditAvatarPopup';
 
 function App() {
 
+    const [currentUser, setCurrentUser] = useState({});
     const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
     const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
     const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
-    const [selectedCard, setSelectedCard] = useState();
+    const [selectedCard, setSelectedCard] = useState({});
+
+
+    useEffect(() => {
+        api.getUserInfo()
+            .then((userData) => {
+                setCurrentUser(userData);
+            })
+            .catch(err => console.log(err));
+        
+    }, []);
 
     function handleEditProfileClick() {
         setIsEditProfilePopupOpen(true);
@@ -31,6 +45,24 @@ function App() {
         setIsImagePopupOpen(true);
     }
 
+    function handleUpdateUser(userData) {
+        api.setUserInfo(userData)
+        .then((res) => {
+          setCurrentUser(res);
+          closeAllPopups();
+        })
+        .catch(err => console.log(err))
+    }
+
+    function handleUpdateAvatar(avatarData) {
+        api.setUserAvatar(avatarData)
+          .then((res) => {
+            setCurrentUser(res);
+            closeAllPopups();
+          })
+          .catch(err => console.log(err));
+      }
+
     function closeAllPopups () {
         setIsEditProfilePopupOpen(false);
         setIsEditAvatarPopupOpen(false);
@@ -39,7 +71,7 @@ function App() {
     }
 
     return (
-        <>
+        <CurrentUserContext.Provider value={currentUser}>
             <Header />
             <Main 
                 onEditProfile={handleEditProfileClick}
@@ -48,7 +80,17 @@ function App() {
                 onCardClick={handleCardClick}
                 />
             <Footer/>
-            <PopupWithForm
+            <EditProfilePopup 
+                isOpen={isEditProfilePopupOpen} 
+                onClose={closeAllPopups} 
+                onUpdateUser={handleUpdateUser}
+                />
+            <EditAvatarPopup
+                isOpen={isEditAvatarPopupOpen} 
+                onClose={closeAllPopups} 
+                onUpdateAvatar={handleUpdateAvatar}
+                /> 
+            {/* <PopupWithForm
                 isOpen={isEditProfilePopupOpen} 
                 onClose={closeAllPopups}
                 name='edit-profile'
@@ -79,7 +121,7 @@ function App() {
                         <span id="job-error" className='popup__error'></span>
                     </>
 
-            }/>
+            }/> */}
             <PopupWithForm
                 isOpen={isAddPlacePopupOpen}
                 onClose={closeAllPopups}
@@ -111,7 +153,7 @@ function App() {
                 }
             />
 
-            <PopupWithForm
+            {/* <PopupWithForm
                 isOpen={isEditAvatarPopupOpen}
                 onClose={closeAllPopups}
                 name='update-avatar'
@@ -128,7 +170,7 @@ function App() {
                         <span id="avatar-error" className='popup__error'></span>   
                     </>
                 }
-            />
+            /> */}
             <PopupWithForm
                 name='confirm'
                 title='Вы уверены?'
@@ -257,7 +299,7 @@ function App() {
                     </div>
                 </div>
             </template> */}
-        </>
+        </CurrentUserContext.Provider>
 
     );
 }
