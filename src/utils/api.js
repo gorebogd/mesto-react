@@ -1,4 +1,4 @@
- class Api {
+class Api {
     constructor({address, token, groupId}) {
         this._token = token;
         this._groupId = groupId;
@@ -18,7 +18,7 @@
             .then(this.getResponse)
     }
 
-    setUserInfo({ name, about }) {
+    setUserInfo({name, about}) {
         return fetch(`${this._address}/${this._groupId}/users/me`, {
             method: 'PATCH',
             headers: {
@@ -28,23 +28,23 @@
             body: JSON.stringify({
                 name,
                 about
+            })
         })
-    })
             .then(this.getResponse)
     }
 
-    setUserAvatar({ avatar }) {
+    setUserAvatar({avatar}) {
         return fetch(`${this._address}/${this._groupId}/users/me/avatar`, {
-          method: 'PATCH',
-          headers: {
-            authorization: this._token,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            avatar,
-          }),
+            method: 'PATCH',
+            headers: {
+                authorization: this._token,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                avatar,
+            }),
         })
-          .then(this._getResponse)    
+            .then(this._getResponse)
     }
 
     getCards() {
@@ -56,7 +56,7 @@
             .then(this.getResponse)
     }
 
-    addCard({ name, link }) {
+    addCard({name, link}) {
         return fetch(`${this._address}/${this._groupId}/cards`, {
             method: 'POST',
             headers: {
@@ -83,17 +83,17 @@
 
     toggleLike(cardID, like) {
         return fetch(`${this._address}/${this._groupId}/cards/likes/${cardID}`, {
-          method: like ? 'PUT' : 'DELETE',
-          headers: {
-            authorization: this._token,
-            'Content-Type': 'application/json'
-          }
+            method: like ? 'PUT' : 'DELETE',
+            headers: {
+                authorization: this._token,
+                'Content-Type': 'application/json'
+            }
         })
-          .then(this.getResponse)
-      }
- }
+            .then(this.getResponse)
+    }
+}
 
- const api = new Api({
+const api = new Api({
     address: "https://mesto.nomoreparties.co/v1",
     groupId: `cohort-16`,
     token: `6b84de2d-b5c7-4b45-ba81-be44fff680e4`,

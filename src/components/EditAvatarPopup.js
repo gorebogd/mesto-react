@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, {useRef} from 'react';
 import PopupWithForm from './PopupWithForm';
 
 function EditAvatarPopup(props) {
@@ -7,10 +7,10 @@ function EditAvatarPopup(props) {
 
     function handleSubmit(event) {
         event.preventDefault();
-        props.onUpdateAvatar({ 
-            avatar: inputRef.current.value, 
+        props.onUpdateAvatar({
+            avatar: inputRef.current.value,
         });
-      }
+    }
 
     return (
         <PopupWithForm
@@ -29,11 +29,11 @@ function EditAvatarPopup(props) {
                         className="popup__input-text popup__input-text_type_avatar-source"
                         required
                     />
-                    <span id="avatar-error" className='popup__error'></span>   
+                    <span id="avatar-error" className='popup__error'></span>
                 </>
             }
         />
-        )   
-    }
+    )
+}
 
 export default EditAvatarPopup;

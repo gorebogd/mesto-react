@@ -16,10 +16,11 @@ function AddPlacePopup(props) {
 
     function handlePlaceNameInput(event) {
         setPlaceName(event.target.value);
-      };
-    function handlePlaceLinkInput (event) {
+    }
+
+    function handlePlaceLinkInput(event) {
         setPlaceLink(event.target.value);
-      };
+    }
 
     return (
         <PopupWithForm
