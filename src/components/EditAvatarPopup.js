@@ -8,7 +8,7 @@ function EditAvatarPopup(props) {
     function handleSubmit(event) {
         event.preventDefault();
         props.onUpdateAvatar({ 
-            avatar:inputRef.current.value, 
+            avatar: inputRef.current.value, 
         });
       }
 
