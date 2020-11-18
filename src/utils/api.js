@@ -33,18 +33,18 @@
             .then(this.getResponse)
     }
 
-    setUserAvatar({avatar}) {
+    setUserAvatar({ avatar }) {
         return fetch(`${this._address}/${this._groupId}/users/me/avatar`, {
-            method: 'PATCH',
-            headers: {
-                authorization: this._token,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                avatar
-            })
+          method: 'PATCH',
+          headers: {
+            authorization: this._token,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            avatar,
+          }),
         })
-            .then(this.getResponse);
+          .then(this._getResponse)    
     }
 
     getCards() {
@@ -56,7 +56,7 @@
             .then(this.getResponse)
     }
 
-    addCard(data) {
+    addCard({ name, link }) {
         return fetch(`${this._address}/${this._groupId}/cards`, {
             method: 'POST',
             headers: {
@@ -64,8 +64,8 @@
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                name: data.place,
-                link: data.image
+                name,
+                link,
             })
         })
             .then(this.getResponse)

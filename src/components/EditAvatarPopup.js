@@ -7,8 +7,11 @@ function EditAvatarPopup(props) {
 
     function handleSubmit(event) {
         event.preventDefault();
-        props.onUpdateAvatar(inputRef.current.value || '');
+        props.onUpdateAvatar({ 
+            avatar:inputRef.current.value, 
+        });
       }
+
     return (
         <PopupWithForm
             isOpen={props.isOpen}
