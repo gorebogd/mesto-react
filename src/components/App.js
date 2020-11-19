@@ -27,7 +27,7 @@ function App() {
             })
             .catch(err => console.log(err));
 
-    }, []);
+    }, [currentUser]);
 
     function handleEditProfileClick() {
         setIsEditProfilePopupOpen(true);
@@ -80,7 +80,8 @@ function App() {
             .then((newCard) => {
                 const newCards = cards.map((c) => c._id === card._id ? newCard : c);
                 setCards(newCards);
-            });
+            })
+            .catch(err => console.log(err));
     }
 
     function handleCardDelete(card) {
